@@ -1,6 +1,7 @@
 // app/album/[id]/page.tsx
 import React from "react";
 import { prisma } from "@/lib/prisma";
+import UploadForm from "@/ui/UploadForm";
 
 async function fetchAlbumPictures(albumId: string) {
   const album = await prisma.album.findFirst({
@@ -18,7 +19,7 @@ async function fetchAlbumPictures(albumId: string) {
 }
 
 export default async function AlbumPage({ params }: { params: { albumId: string } }) {
-  const { albumId } = params;
+  const { albumId } = await params;
 
   let album;
   try {
@@ -35,6 +36,7 @@ export default async function AlbumPage({ params }: { params: { albumId: string 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <h1 className="text-3xl font-bold text-center mb-6">{album.title}</h1>
+      <UploadForm />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {album.pictures.map((picture) => (
           <div key={picture.id} className="bg-white rounded-lg shadow p-4">
