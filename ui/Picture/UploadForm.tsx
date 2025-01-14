@@ -2,7 +2,12 @@
 
 import React, { useState } from "react";
 
-export default function FileUploadWithModal({ albumId }: { albumId: string }) {
+interface Params {
+  albumId: number;
+  fetchAlbum: () => void;
+}
+
+const UploadForm: React.FC<Params> = ({ albumId, fetchAlbum }) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -23,7 +28,7 @@ export default function FileUploadWithModal({ albumId }: { albumId: string }) {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("albumId", albumId);
+    formData.append("albumId", albumId.toString());
 
     try {
       const response = await fetch("/api/upload", {
@@ -32,7 +37,8 @@ export default function FileUploadWithModal({ albumId }: { albumId: string }) {
       });
 
       if (response.ok) {
-        setUploadStatus("File uploaded successfully!");
+        fetchAlbum();
+        closeModal();
       } else {
         setUploadStatus("Failed to upload file.");
       }
@@ -77,17 +83,11 @@ export default function FileUploadWithModal({ albumId }: { albumId: string }) {
               </button>
             </form>
             {uploadStatus && <p className="mt-4 text-sm text-gray-700">{uploadStatus}</p>}
-
-            {/* Close Button */}
-            <button
-              onClick={closeModal}
-              className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
     </div>
   );
 }
+
+export default UploadForm;

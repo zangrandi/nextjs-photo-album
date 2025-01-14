@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import { redirect } from 'next/navigation'
 
 export const metadata = {
   title: 'Next.js',
@@ -17,7 +18,11 @@ export default function RootLayout({
       </head>
       <body>
         <header className="bg-blue-500 text-white py-4 text-center">
-          <h1 className="text-3xl font-bold">Next Photo Album</h1>
+          <h1 className="text-3xl font-bold">
+            <a href='/'>
+              Next Photo Album
+            </a>
+          </h1>
         </header>
         {children}
         <footer className="bg-gray-800 text-white py-4 text-center">

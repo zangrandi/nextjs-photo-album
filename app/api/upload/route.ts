@@ -45,9 +45,10 @@ export async function POST(req: NextRequest) {
     const file = files[0];
     const albumId = formData.getAll('albumId');
 
-    saveFile(file).then((filePath) => {
-      savePicture(filePath, albumId);
-    })
+    const filePath = await saveFile(file);
+    const picture = await savePicture(filePath, albumId);
+
+    console.log(picture);
 
     return NextResponse.json({ message: "File uploaded successfully!", file });
   } catch (error) {
