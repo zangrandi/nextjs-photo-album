@@ -15,17 +15,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
-      <body>
-        <header className="bg-blue-500 text-white py-4 text-center">
+      <body className="min-h-screen flex flex-col">
+        <header className="fixed top-0 left-0 w-full z-10 bg-blue-500 text-white py-4 text-center">
           <h1 className="text-3xl font-bold">
             <a href='/'>
               Next Photo Album
             </a>
           </h1>
         </header>
-        {children}
-        <footer className="bg-gray-800 text-white py-4 text-center">
+        <main className="flex-grow overflow-auto">{children}</main>
+        <footer className="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-4 text-center z-10">
           <p className="text-sm">Created by Augusto Zangrando</p>
         </footer>
       </body>

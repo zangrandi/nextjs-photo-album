@@ -59,9 +59,9 @@ const UploadForm: React.FC<Params> = ({ albumId, fetchAlbum }) => {
       {/* Button to open modal */}
       <button
         onClick={openModal}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        className="fixed top-4 right-5 z-20 px-4 py-2 bg-white text-blue rounded-lg hover:bg-gray-200"
       >
-        Open Upload Modal
+        Upload Picture
       </button>
 
       {/* Modal */}
