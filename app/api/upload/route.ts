@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { formidable } from "formidable";
+import prisma from "@/lib/prisma";
 
 // Disable automatic body parsing by Next.js
 export const config = {
@@ -10,29 +10,47 @@ export const config = {
   },
 };
 
-// API Route
+const saveFile = async (file) => {
+  const uploadDir = path.join(process.cwd(), "/public/uploads");
+
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const filePath = path.join(uploadDir, file.name);
+  fs.writeFileSync(filePath, buffer);
+
+  return `/uploads/${file.name}`;
+};
+
+const savePicture = async (filePath, albumId) => {
+  const picture = await prisma.picture.create({
+    data: {
+      title: "Uploaded Picture",
+      url: filePath,
+      albumId: parseInt(albumId),
+    },
+  });
+
+  return picture;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const uploadDir = path.join(process.cwd(), "/uploads");
-
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
     const formData = await req.formData();
     const files = formData.getAll('file') as File[];
     const file = files[0];
+    const albumId = formData.getAll('albumId');
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    saveFile(file).then((filePath) => {
+      savePicture(filePath, albumId);
+    })
 
-    const filePath = path.join(uploadDir, file.name);
-    fs.writeFileSync(filePath, buffer);
-
-    console.log("Uploaded file:", file);
     return NextResponse.json({ message: "File uploaded successfully!", file });
   } catch (error) {
-    console.error("Error processing upload:", error);
     return NextResponse.json({ error: "File upload failed." }, { status: 500 });
   }
 }

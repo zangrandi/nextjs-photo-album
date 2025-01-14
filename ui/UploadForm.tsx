@@ -2,18 +2,19 @@
 
 import React, { useState } from "react";
 
-export default function UploadForm() {
+export default function FileUploadWithModal({ albumId }: { albumId: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     if (!file) {
       setUploadStatus("Please select a file to upload.");
@@ -22,6 +23,7 @@ export default function UploadForm() {
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("albumId", albumId);
 
     try {
       const response = await fetch("/api/upload", {
@@ -36,27 +38,56 @@ export default function UploadForm() {
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      setUploadStatus("An error occurred while uploading the file.");
+      setUploadStatus("An error occurred during file upload.");
     }
+  };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setUploadStatus("");
   };
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Upload a File</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-300 file:text-gray-700 file:bg-gray-50 hover:file:bg-gray-100"
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-        >
-          Upload
-        </button>
-      </form>
-      {uploadStatus && <p className="mt-4 text-sm text-gray-700">{uploadStatus}</p>}
+      {/* Button to open modal */}
+      <button
+        onClick={openModal}
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        Open Upload Modal
+      </button>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h1 className="text-2xl font-bold mb-4">Upload a File</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-gray-300 file:text-gray-700 file:bg-gray-50 hover:file:bg-gray-100"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Upload
+              </button>
+            </form>
+            {uploadStatus && <p className="mt-4 text-sm text-gray-700">{uploadStatus}</p>}
+
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="mt-4 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

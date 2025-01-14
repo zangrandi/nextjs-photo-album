@@ -24,6 +24,7 @@ model User {
 model Picture {
   id        Int      @id @default(autoincrement())
   title     String
+  url       String
   createdAt DateTime @default(now()) // Timestamp default for createdAt
   updatedAt DateTime @updatedAt // Automatically updates on record modification
   Album     Album?   @relation(fields: [albumId], references: [id])

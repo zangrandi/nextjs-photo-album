@@ -6,7 +6,7 @@ import UploadForm from "@/ui/UploadForm";
 async function fetchAlbumPictures(albumId: string) {
   const album = await prisma.album.findFirst({
     where: {
-      id: { equals: 1 }
+      code: { equals: albumId }
     },
     include: { pictures: true }
   });
@@ -25,7 +25,6 @@ export default async function AlbumPage({ params }: { params: { albumId: string 
   try {
     album = await fetchAlbumPictures(albumId);
   } catch (error) {
-    console.log(error);
     return (
       <div className="flex items-center justify-center h-screen">
         <h1 className="text-2xl font-bold text-red-500">Failed to load album.</h1>
@@ -36,7 +35,7 @@ export default async function AlbumPage({ params }: { params: { albumId: string 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <h1 className="text-3xl font-bold text-center mb-6">{album.title}</h1>
-      <UploadForm />
+      <UploadForm albumId={album.id} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {album.pictures.map((picture) => (
           <div key={picture.id} className="bg-white rounded-lg shadow p-4">
