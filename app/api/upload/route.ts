@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     console.log(picture);
 
     return NextResponse.json({ message: "File uploaded successfully!", file });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "File upload failed." }, { status: 500 });
   }
 }

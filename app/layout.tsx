@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import { redirect } from 'next/navigation'
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Next.js',
@@ -13,16 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
-      </head>
       <body className="min-h-screen flex flex-col">
         <header className="fixed top-0 left-0 w-full z-10 bg-blue-500 text-white py-4 text-center">
           <h1 className="text-3xl font-bold">
-            <a href='/'>
+            <Link href='/'>
               Next Photo Album
-            </a>
+            </Link>
           </h1>
         </header>
         <main className="flex-grow overflow-auto">{children}</main>

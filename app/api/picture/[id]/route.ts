@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 const deletePicture = async (id: number) => {
   try {
-    const deletedPicture = await prisma.picture.delete({
+    await prisma.picture.delete({
       where: { id },
     });
 
     return true
-  } catch (error) {
+  } catch {
     return false
   }
 };
@@ -19,7 +19,7 @@ type Params = Promise<{ id: string  }>
 
 export async function DELETE(req: NextRequest, { params }: { params: Params }) {
   const { id } = await params;
-  const success = deletePicture(parseInt(id))
+  const success = await deletePicture(parseInt(id))
 
   if (success) {
     return NextResponse.json({ message: "Picture deleted successfully!" });
