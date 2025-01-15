@@ -15,8 +15,9 @@ const deletePicture = async (id: number) => {
   }
 };
 
+type Params = Promise<{ id: string  }>
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Params }) {
   const { id } = await params;
   const success = deletePicture(parseInt(id))
 

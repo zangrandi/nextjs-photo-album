@@ -20,7 +20,9 @@ async function fetchAlbum(code: string) {
   return album;
 }
 
-export async function GET(req: NextRequest, { params }: { params: { code: string } }) {
+type Params = Promise<{ code: string  }>
+
+export async function GET(req: NextRequest, { params }: { params: Params }) {
   const { code } = await params;
   const album = await fetchAlbum(code)
 
