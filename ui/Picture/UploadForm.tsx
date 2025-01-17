@@ -30,6 +30,8 @@ const UploadForm: React.FC<Params> = ({ albumId, fetchAlbum }) => {
     formData.append("file", file);
     formData.append("albumId", albumId.toString());
 
+    setUploadStatus("Uploading file...");
+
     try {
       const response = await fetch("/api/upload", {
         method: "POST",
