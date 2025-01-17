@@ -10,6 +10,8 @@ This project is a simple example of a public photo album application. The app al
 
 The application demonstrates essential features like authentication by key, file handling, and CRUD operations in a straightforward and user-friendly way.
 
+**Live URL:** [View the App](https://nextjs-photo-album-iny85y62q-zangrandis-projects.vercel.app/)
+
 ---
 
 ## Technologies Used
@@ -31,6 +33,7 @@ The application demonstrates essential features like authentication by key, file
 
 ---
 
+## Live
 ## Setup Instructions
 
 1. **Clone the repository:**
