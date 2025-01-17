@@ -1,4 +1,4 @@
-# Project Name
+# Next.js Photo Album
 
 ## Overview
 
