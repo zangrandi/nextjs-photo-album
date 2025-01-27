@@ -23,7 +23,7 @@ export default function RootLayout({
         </header>
         <main className="flex-grow overflow-auto">{children}</main>
         <footer className="fixed bottom-0 left-0 w-full bg-gray-800 text-white py-4 text-center z-10">
-          <p className="text-sm">Created by Augusto Zangrando</p>
+          <p className="text-sm">Created by Augusto Zangrandi</p>
         </footer>
       </body>
     </html>
