@@ -2,22 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 async function fetchAlbum(code: string) {
-  let album = undefined
-
-  album = await prisma.album.findFirst({
-    where: {
-      code: { equals: code }
-    },
-    include: { pictures: true }
-  });
-
-  if (!album) {
-    album = await prisma.album.create({
-      data: { code: code },
+  try {
+    const album = await prisma.album.upsert({
+      where: { code },
+      update: {},
+      create: { code },
+      include: { pictures: true },
     });
-  }
 
-  return album;
+    return album;
+  } catch (error) {
+    console.error("Error fetching or creating album:", error);
+    throw new Error("Could not fetch or create album");
+  }
 }
 
 type Params = Promise<{ code: string  }>
